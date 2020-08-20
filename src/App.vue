@@ -1,32 +1,90 @@
+/* eslint-disable prettier/prettier */
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app id="keep">
+    <v-app-bar app clipped-left color="amber">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5">
+        Base&nbsp;
+        <span class="font-weight-light">Frontend</span>
+      </span>
+      <v-text-field
+        solo-inverted
+        flat
+        hide-details
+        label="Search"
+        prepend-inner-icon="mdi-account-search"
+      ></v-text-field>
+
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
+      <v-list dense class="grey lighten-4">
+        <template v-for="(item, i) in items">
+          <v-row v-if="item.heading" :key="i" align="center">
+            <v-col cols="6">
+              <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
+            </v-col>
+            <v-col cols="6" class="text-right">
+              <v-btn small text>edit</v-btn>
+            </v-col>
+          </v-row>
+          <v-divider
+            v-else-if="item.divider"
+            :key="i"
+            dark
+            class="my-4"
+          ></v-divider>
+          <v-list-item v-else :key="i" link>
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title class="grey--text">
+                {{ item.text }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main>
+      <v-container fluid class="grey lighten-4 fill-height">
+        <v-row justify="center" align="center">
+          <router-view />
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import Vue from "vue";
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+export default Vue.extend({
+  name: "App",
+  props: {
+    source: String
+  },
+  data: () => ({
+    drawer: null,
+    items: [
+      { icon: "mdi-lightbulb", text: "Notes" },
+      { icon: "mdi-reminder", text: "Reminders" },
+      { divider: true },
+      { heading: "Labels" },
+      { icon: "mdi-add", text: "Create new label" },
+      { divider: true },
+      { icon: "mdi-archive", text: "Archive" },
+      { icon: "mdi-delete", text: "Trash" },
+      { divider: true },
+      { icon: "mdi-setting", text: "Settings" },
+      { icon: "mdi-delete", text: "Trash" },
+      { icon: "mdi-help", text: "Help" },
+      { icon: "mdi-download", text: "App downloads" },
+      { icon: "mdi-keyboard", text: "Keyboard shortcuts" }
+    ]
+  })
+});
+</script>
