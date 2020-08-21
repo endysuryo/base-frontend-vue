@@ -67,6 +67,10 @@ export default Vue.extend({
   props: {
     source: String
   },
+  mounted() {
+    this.console();
+  },
+
   data: () => ({
     drawer: null,
     items: [
@@ -85,6 +89,12 @@ export default Vue.extend({
       { icon: "mdi-download", text: "App downloads" },
       { icon: "mdi-keyboard", text: "Keyboard shortcuts" }
     ]
-  })
+  }),
+
+  methods: {
+    console() {
+      console.info("hello : ", process.env.VUE_APP_NAME);
+    }
+  }
 });
 </script>
